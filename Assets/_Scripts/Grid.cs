@@ -49,5 +49,14 @@ public class Grid : MonoBehaviour {
     }
   }
 
+  public static BlockController getBlockAt(int x, int y)
+  {
+    if (grid[x, y] != null) {
+      BlockController block = grid[x, y].GetComponent<BlockController>();
+      return block;
+    }
+    return null;
+  }
+
 
 }
