@@ -3,6 +3,7 @@ using System.Collections;
 
 public class BlockManager : MonoBehaviour {
   public ColumnManager columnManager;
+  public ColorController colorController;
   private BlockController activeBlock;
   private BlockController[] pool;
   private int currentIndex;

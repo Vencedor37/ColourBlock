@@ -7,6 +7,7 @@ public class ColumnController : MonoBehaviour {
   private float leftX;
   private float rightX;
   private bool initialised = false;
+  private int index;
 
 	// Use this for initialization
 	void Start () {
@@ -65,11 +66,12 @@ public class ColumnController : MonoBehaviour {
 
   public void DrawLeft(float bottomY, float topY)
   {
-    Vector3 start = new Vector3(leftX - 0.025f, bottomY, 1);
-    Vector3 end = new Vector3(leftX - 0.025f, topY, 1);
+    Vector3 start = new Vector3(leftX - 0.5f, bottomY, 1);
+    Vector3 end = new Vector3(leftX - 0.5f, topY, 1);
     Vector3[] points = new Vector3[]{start, end};
     lineRenderer.SetPositions(points);
   }
+
   public void DrawRight(float bottomY, float topY)
   {
     Vector3 start = new Vector3(rightX, bottomY, 1);
@@ -81,7 +83,17 @@ public class ColumnController : MonoBehaviour {
   public bool IsPointInColumn(Vector3 point)
   {
     point = columnManager.mainCamera.ScreenToWorldPoint(point);
-    return (point.x > leftX && point.x < rightX);
+    return (point.x > leftX - 0.5f && point.x < rightX - 0.5f);
+  }
+
+  public void setIndex(int value)
+  {
+    index = value;
+  }
+
+  public int getIndex()
+  {
+    return index;
   }
 
 }

@@ -18,8 +18,8 @@ public class MotionController : MonoBehaviour {
       if (activeBlock != null) {
         BlockController blockController = activeBlock.GetComponent<BlockController>();
         if (activeBlock != null) {
-          ColumnController moveToColumn = columns.CheckPointColumn(Input.mousePosition);
-          if (moveToColumn != null) {
+          int moveToColumn = columns.CheckPointColumnIndex(Input.mousePosition);
+          if (moveToColumn != -1) {
             blockController.AttemptMoveToColumn(moveToColumn);
           }
         }

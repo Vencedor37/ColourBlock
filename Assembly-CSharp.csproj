@@ -47,8 +47,10 @@
   <ItemGroup>
      <Compile Include="Assets\_Scripts\BlockController.cs" />
      <Compile Include="Assets\_Scripts\BlockManager.cs" />
+     <Compile Include="Assets\_Scripts\ColorController.cs" />
      <Compile Include="Assets\_Scripts\ColumnController.cs" />
      <Compile Include="Assets\_Scripts\ColumnManager.cs" />
+     <Compile Include="Assets\_Scripts\Grid.cs" />
      <Compile Include="Assets\_Scripts\MotionController.cs" />
  <Reference Include="UnityEngine.Networking">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>

@@ -6,13 +6,12 @@ using System.Collections.Generic;
 
 public class ColumnManager : MonoBehaviour {
   public Camera mainCamera;
-  public Rect gameArea;
+  public Bounds gameArea;
   public Transform foreground;
   public GameObject type;
   public bool showColumns;
   private float screenWidth;
   private float screenHeight;
-  public int numberColumns;
   public Color columnColor;
   public Shader lineShader;
   public float columnLineWidth;
@@ -30,16 +29,11 @@ public class ColumnManager : MonoBehaviour {
 	void Start () {
     screenHeight = 2f * mainCamera.orthographicSize;
     screenWidth = screenHeight * mainCamera.aspect;
-    gameAreaHeight = screenHeight * .85f;
     gameAreaWidth = screenWidth * .85f;
+    columnWidth = gameAreaWidth / Grid.w;
+    gameAreaHeight = Grid.h * columnWidth;
 
-    gameArea = new Rect(0 - screenWidth/2 + screenWidth * .075f, 0 - screenHeight/2 + screenHeight * .075f, gameAreaWidth, gameAreaHeight);
-    Vector3 scale = new Vector3(gameAreaWidth, gameAreaHeight, 0);
-    Vector3 point = gameArea.position;
-
-
-    point = mainCamera.ScreenToWorldPoint(point);
-    foreground.localScale = scale;
+    gameArea = foreground.GetComponent<SpriteRenderer>().bounds;
 
     InitialiseColumns();
     InitialiseLineRenderer();
@@ -59,11 +53,9 @@ public class ColumnManager : MonoBehaviour {
 
   void DrawColumns()
   {
-    float yMin = 0 - gameAreaHeight/2;
-    float yMax = 0 + gameAreaHeight/2;
     if (showColumns) {
       for (int i = 1; i < columns.Count; i++) {
-        columns[i].DrawLeft(yMin, yMax);
+        columns[i].DrawLeft(gameArea.min.y, gameArea.max.y);
       }
     }
   }
@@ -87,17 +79,27 @@ public class ColumnManager : MonoBehaviour {
     return null;
   }
 
+  public int CheckPointColumnIndex(Vector3 point)
+  {
+    for (int i = 0; i < columns.Count; i ++) {
+      if (columns[i].IsPointInColumn(point)) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
   void InitialiseColumns()
   {
     columns = new List<ColumnController>();
     float xPos = 0 - gameAreaWidth / 2;
-    columnWidth = gameAreaWidth / numberColumns;
-    for (int i = 0; i < numberColumns; i++) {
+    for (int i = 0; i < Grid.w; i++) {
       GameObject newObject = (GameObject)Instantiate(type, new Vector3(0, 0, 0), Quaternion.identity);
       newObject.transform.SetParent(GetComponent<Transform>(), false);
       ColumnController column = newObject.GetComponent<ColumnController>();
-      column.setLeftX(xPos);
-      column.setRightX(xPos + columnWidth);
+      column.setIndex(i);
+      column.setLeftX(i);
+      column.setRightX(i + 1);
       column.SetColumnManager(this);
       columns.Add(column);
       xPos += columnWidth;
@@ -122,23 +124,23 @@ public class ColumnManager : MonoBehaviour {
   {
     for (int i = 0; i < borderRenderers.Length; i++) {
       if (i == 0) {
-        Vector3 point1 = new Vector3(gameArea.xMin - columnBorderOffset, gameArea.yMin, 1);
-        Vector3 point2 = new Vector3(gameArea.xMin - columnBorderOffset, gameArea.yMax, 1);
+        Vector3 point1 = new Vector3(gameArea.min.x, gameArea.min.y, 1);
+        Vector3 point2 = new Vector3(gameArea.min.x, gameArea.max.y, 1);
         borderRenderers[i].SetPositions(new Vector3[]{point1, point2});
       }
       if (i == 1) {
-        Vector3 point1 = new Vector3(gameArea.xMin, gameArea.yMax, 1);
-        Vector3 point2 = new Vector3(gameArea.xMax, gameArea.yMax, 1);
+        Vector3 point1 = new Vector3(gameArea.min.x, gameArea.max.y, 1);
+        Vector3 point2 = new Vector3(gameArea.max.x, gameArea.max.y, 1);
         borderRenderers[i].SetPositions(new Vector3[]{point1, point2});
       }
       if (i == 2) {
-        Vector3 point1 = new Vector3(gameArea.xMax - columnBorderOffset, gameArea.yMax, 1);
-        Vector3 point2 = new Vector3(gameArea.xMax - columnBorderOffset, gameArea.yMin, 1);
+        Vector3 point1 = new Vector3(gameArea.max.x, gameArea.max.y, 1);
+        Vector3 point2 = new Vector3(gameArea.max.x, gameArea.min.y, 1);
         borderRenderers[i].SetPositions(new Vector3[]{point1, point2});
       }
       if (i == 3) {
-        Vector3 point1 = new Vector3(gameArea.xMax, gameArea.yMin, 1);
-        Vector3 point2 = new Vector3(gameArea.xMin, gameArea.yMin, 1);
+        Vector3 point1 = new Vector3(gameArea.max.x, gameArea.min.y, 1);
+        Vector3 point2 = new Vector3(gameArea.min.x, gameArea.min.y, 1);
         borderRenderers[i].SetPositions(new Vector3[]{point1, point2});
       }
     }
@@ -146,7 +148,7 @@ public class ColumnManager : MonoBehaviour {
 
   public float getColumnWidth()
   {
-    return columnWidth;
+    return 1;
   }
 
   public List<ColumnController> getColumns()
@@ -154,9 +156,9 @@ public class ColumnManager : MonoBehaviour {
     return columns;
   }
 
-  public float getGameAreaTop()
+  public int getGameAreaTop()
   {
-    return gameArea.yMax;
+    return (int)gameArea.max.y;
   }
 
 
