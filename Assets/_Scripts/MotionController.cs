@@ -3,6 +3,7 @@ using System.Collections;
 
 public class MotionController : MonoBehaviour {
   public ColumnManager columns;
+  public BlockManager blockManager;
 
 
 	// Use this for initialization
@@ -15,9 +16,12 @@ public class MotionController : MonoBehaviour {
     if (isInputReleased()) {
       GameObject activeBlock = GameObject.FindWithTag("ActiveBlock");
       if (activeBlock != null) {
-        ColumnController moveToColumn = columns.CheckPointColumn(Input.mousePosition);
-        if (moveToColumn != null) {
-          activeBlock.GetComponent<BlockController>().SnapToColumn(moveToColumn);
+        BlockController blockController = activeBlock.GetComponent<BlockController>();
+        if (activeBlock != null) {
+          ColumnController moveToColumn = columns.CheckPointColumn(Input.mousePosition);
+          if (moveToColumn != null) {
+            blockController.AttemptMoveToColumn(moveToColumn);
+          }
         }
       }
     }
@@ -34,4 +38,5 @@ public class MotionController : MonoBehaviour {
     }
     return false;
   }
+
 }

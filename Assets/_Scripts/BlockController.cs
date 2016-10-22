@@ -65,6 +65,26 @@ public class BlockController : MonoBehaviour {
     return Vector2.zero;
   }
 
+  public void AttemptMoveToColumn(ColumnController column)
+  {
+    if (!CheckForBlockInColumn(column)) {
+      SnapToColumn(column);
+    }
+  }
+
+  private bool CheckForBlockInColumn(ColumnController column)
+  {
+    Vector2 start = new Vector2(column.getCentreX(), transform.position.y);
+    Vector2 finish = new Vector2(column.getLeftX(), transform.position.y);
+    int layerMask = 1 << PlacedBlockLayer;
+    RaycastHit2D castResults = Physics2D.Linecast(start, finish, layerMask);
+    if (castResults) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   public void ResizeToFitColumn()
   {
     if (!matchesColumn && columnManager.getColumnWidth() != 0) {
