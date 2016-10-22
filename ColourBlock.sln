@@ -1,0 +1,23 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2008
+
+Project("{E2D0E12B-48F7-26F0-E09D-7EB64C101221}") = "ColourBlock", "Assembly-CSharp.csproj", "{501F0672-016E-6DC8-41CB-F8F6929813AA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{501F0672-016E-6DC8-41CB-F8F6929813AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{501F0672-016E-6DC8-41CB-F8F6929813AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{501F0672-016E-6DC8-41CB-F8F6929813AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{501F0672-016E-6DC8-41CB-F8F6929813AA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal
