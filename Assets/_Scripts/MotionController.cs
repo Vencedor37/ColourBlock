@@ -11,13 +11,17 @@ public class MotionController : MonoBehaviour {
 	}
 
 	// Update is called once per frame
-	void Update () {
+  void Update () {
     if (isInputReleased()) {
-      Vector3 releasePosition = Input.mousePosition;
-      columns.CheckInputColumn(releasePosition);
+      GameObject activeBlock = GameObject.FindWithTag("ActiveBlock");
+      if (activeBlock != null) {
+        ColumnController moveToColumn = columns.CheckPointColumn(Input.mousePosition);
+        if (moveToColumn != null) {
+          activeBlock.GetComponent<BlockController>().SnapToColumn(moveToColumn);
+        }
+      }
     }
-
-	}
+  }
 
   private bool leftPressed () {
     return false;

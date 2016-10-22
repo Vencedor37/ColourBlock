@@ -24,6 +24,7 @@ public class ColumnManager : MonoBehaviour {
   private LineRenderer borderRenderer;
   private LineRenderer[] borderRenderers;
   private float columnWidth;
+  public float columnBorderOffset = 0.025f;
 
 	// Use this for initialization
 	void Start () {
@@ -43,13 +44,11 @@ public class ColumnManager : MonoBehaviour {
     InitialiseColumns();
     InitialiseLineRenderer();
     DrawBorders();
-
 	}
 
 	// Update is called once per frame
 	void Update () {
     DrawColumns();
-
 	}
 
 
@@ -78,6 +77,16 @@ public class ColumnManager : MonoBehaviour {
     }
   }
 
+  public ColumnController CheckPointColumn(Vector3 point)
+  {
+    for (int i = 0; i < columns.Count; i ++) {
+      if (columns[i].IsPointInColumn(point)) {
+        return columns[i];
+      }
+    }
+    return null;
+  }
+
   void InitialiseColumns()
   {
     columns = new List<ColumnController>();
@@ -98,7 +107,6 @@ public class ColumnManager : MonoBehaviour {
   void InitialiseLineRenderer()
   {
     borderRenderers = gameObject.GetComponentsInChildren<LineRenderer>();
-    Debug.Log(borderRenderers);
     for (int i = 0; i < borderRenderers.Length; i++) {
       LineRenderer borderRenderer = borderRenderers[i];
       borderRenderer.SetColors(columnColor, columnColor);
@@ -114,8 +122,8 @@ public class ColumnManager : MonoBehaviour {
   {
     for (int i = 0; i < borderRenderers.Length; i++) {
       if (i == 0) {
-        Vector3 point1 = new Vector3(gameArea.xMin, gameArea.yMin, 1);
-        Vector3 point2 = new Vector3(gameArea.xMin, gameArea.yMax, 1);
+        Vector3 point1 = new Vector3(gameArea.xMin - columnBorderOffset, gameArea.yMin, 1);
+        Vector3 point2 = new Vector3(gameArea.xMin - columnBorderOffset, gameArea.yMax, 1);
         borderRenderers[i].SetPositions(new Vector3[]{point1, point2});
       }
       if (i == 1) {
@@ -124,8 +132,8 @@ public class ColumnManager : MonoBehaviour {
         borderRenderers[i].SetPositions(new Vector3[]{point1, point2});
       }
       if (i == 2) {
-        Vector3 point1 = new Vector3(gameArea.xMax, gameArea.yMax, 1);
-        Vector3 point2 = new Vector3(gameArea.xMax, gameArea.yMin, 1);
+        Vector3 point1 = new Vector3(gameArea.xMax - columnBorderOffset, gameArea.yMax, 1);
+        Vector3 point2 = new Vector3(gameArea.xMax - columnBorderOffset, gameArea.yMin, 1);
         borderRenderers[i].SetPositions(new Vector3[]{point1, point2});
       }
       if (i == 3) {
@@ -140,5 +148,16 @@ public class ColumnManager : MonoBehaviour {
   {
     return columnWidth;
   }
+
+  public List<ColumnController> getColumns()
+  {
+    return columns;
+  }
+
+  public float getGameAreaTop()
+  {
+    return gameArea.yMax;
+  }
+
 
 }

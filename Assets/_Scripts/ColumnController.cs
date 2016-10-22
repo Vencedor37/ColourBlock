@@ -39,6 +39,11 @@ public class ColumnController : MonoBehaviour {
     return rightX;
   }
 
+  public float getCentreX()
+  {
+    return (leftX + rightX)/2;
+  }
+
   public void SetColumnManager(ColumnManager value)
   {
     columnManager = value;
@@ -78,4 +83,5 @@ public class ColumnController : MonoBehaviour {
     point = columnManager.mainCamera.ScreenToWorldPoint(point);
     return (point.x > leftX && point.x < rightX);
   }
+
 }
