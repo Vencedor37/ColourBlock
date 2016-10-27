@@ -11,34 +11,29 @@ public class ColorController : MonoBehaviour {
   public Color purpleColor;
   public Color orangeColor;
   public Color greyColor;
-  private BlockColor[] redAllowedBeside;
-  private BlockColor[] blueAllowedBeside;
-  private BlockColor[] yellowAllowedBeside;
-  private BlockColor[] greenAllowedBeside;
-  private BlockColor[] purpleAllowedBeside;
-  private BlockColor[] orangeAllowedBeside;
+  public Color rainbowColor;
+  public BlockColor[] redAllowedBeside;
+  public BlockColor[] blueAllowedBeside;
+  public BlockColor[] yellowAllowedBeside;
+  public BlockColor[] greenAllowedBeside;
+  public BlockColor[] purpleAllowedBeside;
+  public BlockColor[] orangeAllowedBeside;
+  public BlockColor[] spawnableColors;
   private BlockColor[] greyAllowedBeside;
   private BlockColor[] allColors;
-  private BlockColor[] spawnableColors;
+  private BlockColor[] rainbowAllowedBeside;
 
   public static int GREY_INDEX = 6;
 
 	// Use this for initialization
 	void Start () {
-    redAllowedBeside    = new BlockColor[]{BlockColor.RED, BlockColor.ORANGE, BlockColor.PURPLE, BlockColor.GREY};
-    blueAllowedBeside   = new BlockColor[]{BlockColor.BLUE, BlockColor.GREEN, BlockColor.PURPLE, BlockColor.GREY};
-    yellowAllowedBeside = new BlockColor[]{BlockColor.YELLOW, BlockColor.GREEN, BlockColor.ORANGE, BlockColor.GREY};
-    greenAllowedBeside  = new BlockColor[]{BlockColor.GREEN, BlockColor.BLUE, BlockColor.YELLOW, BlockColor.GREY};
-    purpleAllowedBeside = new BlockColor[]{BlockColor.PURPLE, BlockColor.RED, BlockColor.BLUE, BlockColor.GREY};
-    orangeAllowedBeside = new BlockColor[]{BlockColor.ORANGE, BlockColor.RED, BlockColor.YELLOW, BlockColor.GREY};
+    allColors = new BlockColor[System.Enum.GetNames(typeof(BlockColor)).Length];
+    for (int i = 0; i < allColors.Length; i++) {
+      allColors[i] = (BlockColor)i;
+    }
 
-    allColors           = new BlockColor[]{BlockColor.ORANGE, BlockColor.RED, BlockColor.YELLOW, BlockColor.GREY,
-                                           BlockColor.BLUE, BlockColor.GREEN, BlockColor.PURPLE};
     greyAllowedBeside   = allColors;
-
-    spawnableColors     = new BlockColor[]{BlockColor.ORANGE, BlockColor.RED, BlockColor.YELLOW,
-                                           BlockColor.BLUE, BlockColor.GREEN, BlockColor.PURPLE};
-
+    rainbowAllowedBeside = allColors;
 	}
 
 	// Update is called once per frame
@@ -87,6 +82,8 @@ public class ColorController : MonoBehaviour {
         return orangeAllowedBeside;
       case BlockColor.GREY:
         return greyAllowedBeside;
+      case BlockColor.RAINBOW:
+        return rainbowAllowedBeside;
       default:
         return null;
     }
@@ -113,6 +110,8 @@ public class ColorController : MonoBehaviour {
         return purpleAllowedBeside.Contains(adjoining);
       case BlockColor.ORANGE:
         return orangeAllowedBeside.Contains(adjoining);
+      case BlockColor.RAINBOW:
+        return rainbowAllowedBeside.Contains(adjoining);
       default:
         return false;
     }
@@ -131,7 +130,7 @@ public class ColorController : MonoBehaviour {
 
     List<BlockColor> permittedColors = new List<BlockColor>();
     for (int i = 0; i < currentColors.Count; i++) {
-      BlockColor[] colors = GetPermittedColors(currentColors[i]); 
+      BlockColor[] colors = GetPermittedColors(currentColors[i]);
       if (i == 0) {
         foreach (BlockColor color in colors) {
           permittedColors.Add(color);
@@ -151,4 +150,4 @@ public class ColorController : MonoBehaviour {
     return permittedColors;
   }
 }
-public enum BlockColor {RED,BLUE,YELLOW,GREEN,PURPLE,ORANGE, GREY, UNDEFINED};
+public enum BlockColor {RED,BLUE,YELLOW,GREEN,PURPLE,ORANGE, GREY, UNDEFINED, RAINBOW};

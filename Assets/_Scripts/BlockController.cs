@@ -6,6 +6,9 @@ public class BlockController : MonoBehaviour {
   public ColorController colorController;
   public BlockColor blockColor = BlockColor.UNDEFINED;
   public List<BlockController> adjoiningPartners;
+  public Sprite rainbowSprite;
+  public Sprite standardSprite;
+  private SpriteRenderer spriteRenderer;
 
 	// Use this for initialization
 	void Start () {
@@ -78,9 +81,7 @@ public class BlockController : MonoBehaviour {
   private void UpdateColor(int index)
   {
     blockColor = (BlockColor)index;
-    foreach (Transform child in transform) {
-      child.GetComponent<SpriteRenderer>().color = colorController.getColor(blockColor);
-    }
+    UpdateColor(blockColor);
   }
 
   public void UpdateColor(BlockColor newColor)
@@ -88,6 +89,16 @@ public class BlockController : MonoBehaviour {
     blockColor = newColor;
     foreach (Transform child in transform) {
       child.GetComponent<SpriteRenderer>().color = colorController.getColor(blockColor);
+    }
+
+    if (blockColor == BlockColor.RAINBOW) {
+      foreach (Transform child in transform) {
+        child.GetComponent<SpriteRenderer>().sprite = rainbowSprite;
+      }
+    } else {
+      foreach (Transform child in transform) {
+        child.GetComponent<SpriteRenderer>().sprite = standardSprite;
+      }
     }
   }
 
