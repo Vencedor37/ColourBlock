@@ -50,6 +50,7 @@
      <Compile Include="Assets\_Scripts\ColorController.cs" />
      <Compile Include="Assets\_Scripts\ColumnController.cs" />
      <Compile Include="Assets\_Scripts\ColumnManager.cs" />
+     <Compile Include="Assets\_Scripts\ContainerController.cs" />
      <Compile Include="Assets\_Scripts\Grid.cs" />
      <Compile Include="Assets\_Scripts\MotionController.cs" />
  <Reference Include="UnityEngine.Networking">

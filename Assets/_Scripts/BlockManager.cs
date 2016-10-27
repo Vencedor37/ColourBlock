@@ -4,22 +4,19 @@ using System.Collections;
 public class BlockManager : MonoBehaviour {
   public ColumnManager columnManager;
   public ColorController colorController;
-  private BlockController activeBlock;
-  private BlockController[] pool;
+  private ContainerController activeBlock;
+  private ContainerController[] pool;
   private int currentIndex;
   public int poolCount;
-  public GameObject block;
+  public GameObject objectType;
   private bool readyToStart = false;
   public float moveAtTime = 1f;
-
-
 
 	// Use this for initialization
 	void Start () {
     currentIndex = 0;
     InitialisePool();
     readyToStart = true;
-
 	}
 
 	// Update is called once per frame
@@ -27,7 +24,6 @@ public class BlockManager : MonoBehaviour {
     if (readyToStart) {
       SpawnBlock();
     }
-
 	}
 
   void SpawnBlock()
@@ -35,21 +31,22 @@ public class BlockManager : MonoBehaviour {
     if (currentIndex < pool.Length && (activeBlock == null || !activeBlock.getIsActive())) {
       activeBlock = pool[currentIndex];
       activeBlock.gameObject.SetActive(true);
-      activeBlock.ActivateBlock();
+      activeBlock.setMoveAtTime(moveAtTime);
+      activeBlock.ActivateBlocks();
       currentIndex ++;
     }
   }
 
   void InitialisePool()
   {
-    pool = new BlockController[poolCount];
+    pool = new ContainerController[poolCount];
     for (int i = 0; i < poolCount; i++) {
-      GameObject newObject = (GameObject)Instantiate(block, new Vector3(0, 0, 0), Quaternion.identity) ;
+      GameObject newObject = (GameObject)Instantiate(objectType, new Vector3(0, 0, 0), Quaternion.identity) ;
       newObject.transform.SetParent(GetComponent<Transform>(), false);
       newObject.gameObject.SetActive(false);
-      BlockController blockController = newObject.GetComponent<BlockController>();
-      blockController.setBlockManager(this);
-      pool[i] = blockController;
+      ContainerController container = newObject.GetComponent<ContainerController>();
+      container.setBlockManager(this);
+      pool[i] = container;
     }
   }
 
